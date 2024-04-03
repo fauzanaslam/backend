@@ -1,7 +1,6 @@
 import News from "../db/models/News";
 import { Request, Response } from "express";
 import path from "path";
-import fs from "fs";
 
 const getNews = async (req: Request, res: Response) => {
   try {
