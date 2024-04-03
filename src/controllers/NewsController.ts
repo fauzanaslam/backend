@@ -86,8 +86,29 @@ const createNews = (req: Request, res: Response) => {
   }
 };
 
+const deleteNews = async (req: Request, res: Response) => {
+  const news = await News.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  if (!news) return res.status(404).json({ msg: "No Data Found" });
+
+  try {
+    await News.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json({ msg: "News Deleted Successfuly" });
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
 export default {
   getNews,
   getNewsById,
   createNews,
+  deleteNews,
 };
