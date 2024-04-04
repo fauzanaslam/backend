@@ -1,32 +1,30 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import connection from "../../config/dbConnect";
 
-interface NewsAttributes {
+interface UserAttributes {
   id?: number;
-  header?: string | null;
-  subHeader?: string | null;
-  image?: string | null;
-  url?: string | null;
+  username?: string | null;
+  email?: string | null;
+  password?: string | null;
 
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface NewsInput extends Optional<NewsAttributes, "id"> {}
-export interface NewsOutput extends Required<NewsAttributes> {}
+export interface UserInput extends Optional<UserAttributes, "id"> {}
+export interface UserOutput extends Required<UserAttributes> {}
 
-class News extends Model<NewsAttributes, NewsInput> implements NewsAttributes {
+class User extends Model<UserAttributes, UserInput> implements UserAttributes {
   public id!: number;
-  public header!: string;
-  public subHeader!: string;
-  public image!: string;
-  public url!: string;
+  public username!: string;
+  public email!: string;
+  public password!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-News.init(
+User.init(
   {
     id: {
       type: DataTypes.BIGINT,
@@ -34,19 +32,15 @@ News.init(
       autoIncrement: true,
       allowNull: false,
     },
-    header: {
+    username: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    subHeader: {
+    email: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    url: {
+    password: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -57,4 +51,4 @@ News.init(
     underscored: false,
   }
 );
-export default News;
+export default User;

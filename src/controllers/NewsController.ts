@@ -1,6 +1,7 @@
 import News from "../db/models/News";
 import { Request, Response } from "express";
 import path from "path";
+import fs from "fs";
 
 const getNews = async (req: Request, res: Response) => {
   try {
@@ -86,22 +87,28 @@ const createNews = (req: Request, res: Response) => {
 };
 
 const deleteNews = async (req: Request, res: Response) => {
-  const news = await News.findOne({
-    where: {
-      id: req.params.id,
-    },
-  });
-  if (!news) return res.status(404).json({ msg: "No Data Found" });
-
   try {
+    const news = await News.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!news) return res.status(404).json({ msg: "No Data Found" });
+
+    const imageName = news.image;
+
     await News.destroy({
       where: {
         id: req.params.id,
       },
     });
-    res.status(200).json({ msg: "News Deleted Successfuly" });
+
+    fs.unlinkSync(`./public/images/${imageName}`);
+
+    res.status(200).json({ msg: "News Deleted Successfully" });
   } catch (error: any) {
     console.log(error.message);
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 

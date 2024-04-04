@@ -3,15 +3,17 @@ import "dotenv/config";
 import router from "./routes/Routes";
 import cors from "cors";
 import FileUpload from "express-fileupload";
+import cookieParser from "cookie-parser";
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(FileUpload());
 app.use(express.static("public"));
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
+    credentials: true,
   })
 );
 app.use(router);
